@@ -46,7 +46,7 @@ def train(args):
     dataset = Dataset(os.path.join(data_dir, 'train'),
                       transforms.Compose([util.Resize(size=args.input_size),
                                           transforms.RandomHorizontalFlip(),
-                                          transforms.ToTensor()]))
+                                          transforms.ToTensor(), normalize]))
     if args.distributed:
         sampler = data.distributed.DistributedSampler(dataset)
 
@@ -131,7 +131,7 @@ def test(args, model=None):
     dataset = Dataset(os.path.join(data_dir, 'val'),
                       transforms.Compose([transforms.Resize(args.input_size + 32),
                                           transforms.CenterCrop(args.input_size),
-                                          transforms.ToTensor()]))
+                                          transforms.ToTensor(), normalize]))
 
     loader = data.DataLoader(dataset, 32, num_workers=8, pin_memory=True)
 
